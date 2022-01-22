@@ -58,4 +58,12 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function wallet() {
+        return $this->hasOne(Wallet::class);
+    }
+
+    public function currency(){
+        return $this->belongsToOne(Currency::class)->using(Wallet::class);
+    }
 }
