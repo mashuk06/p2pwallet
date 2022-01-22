@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\LogoutController;
+use App\Http\Controllers\Api\Auth\RegistrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +16,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['prefix' => 'v1'], function () {
+    //Api Auth Routes
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/register', [RegistrationController::class, 'register']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    //logout route via sanctum
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::post('logout', [LogoutController::class, 'logout']);
+    });
 });
