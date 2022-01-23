@@ -1,49 +1,107 @@
-<div class="min-w-screen bg-gray-200 flex items-center justify-center px-5 py-5">
-    <div class="bg-white text-gray-800 rounded-xl shadow-lg overflow-hidden relative flex"
-        style="width:414px">
-        <div class="bg-white h-full w-full px-5 pt-6 pb-5 overflow-y-auto">
+<div class="flex flex-wrap -mx-6 overflow-hidden">
+    <div class="my-6 px-6 w-1/3 overflow-hidden border-2">
+        <div class="bg-gray-100 h-full w-full px-5 overflow-y-auto">
             <center>
-                <div id="empty-cover-art"
-                    class="shadow-md rounded w-80 bg-cyan-100 text-5xl text-center opacity-50">
-                    <center><svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                    </svg>My Wallet</center>
+                <div id="empty-cover-art" class="shadow-md rounded w-80 bg-gray-300 text-center">
+                    <center>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                        <p>Welcome, {{ $user_wallet_currency->name }}</p>
+                        <p>Your Currency is {{ $user_wallet_currency->wallet->currency->currency_name }}</p>
+                    </center>
                 </div>
-                <br><strong><p class="text-xl opacity-50">Current Balance Is: {{ $user->wallet->currency->currency_symbol . $user->wallet->available_amount }}</p></strong><br>
-                <x-jet-secondary-button wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled">
-                    {{ __('Transfer Money') }}
-                </x-jet-secondary-button>
+                <br><strong>
+                    <p class="text-xl">Current Balance Is: {{
+                        $user_wallet_currency->wallet->currency->currency_symbol .
+                        $user_wallet_currency->wallet->available_amount }}</p>
+                </strong><br>
             </center>
         </div>
     </div>
-    <x-jet-dialog-modal wire:model="confirmingUserDeletion">
-        <x-slot name="title">
-            {{ __('Delete Account') }}
-        </x-slot>
-
-        <x-slot name="content">
-            {{ __('Are you sure you want to delete your account? Once your account is deleted, all of its resources and data
-            will be permanently deleted. Please enter your password to confirm you would like to permanently delete your
-            account.') }}
-
-            <div class="mt-4" x-data="{}"
-                x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)">
-                <x-jet-input type="password" class="mt-1 block w-3/4" placeholder="{{ __('Password') }}" x-ref="password"
-                    wire:model.defer="password" wire:keydown.enter="deleteUser" />
-
-                <x-jet-input-error for="password" class="mt-2" />
-            </div>
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled">
-                {{ __('Cancel') }}
-            </x-jet-secondary-button>
-
-            <x-jet-danger-button class="ml-3" wire:click="deleteUser" wire:loading.attr="disabled">
-                {{ __('Delete Account') }}
-            </x-jet-danger-button>
-        </x-slot>
-    </x-jet-dialog-modal>
+    <div class="my-6 px-6 w-1/2 overflow-hidden border-2">
+        <div class="w-full bg-white p-5 rounded-lg lg:rounded-l-none">
+            <h3 class="pt-4 text-2xl text-center">Transfer Balance!</h3>
+            <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+                <div class="mb-4">
+                    <label class="block mb-2 text-sm font-bold text-gray-700" for="selectUser">
+                        Select User
+                    </label>
+                    <select class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="selectUser">
+                        @foreach($all_users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-sm font-bold text-gray-700" for="userCurrency">
+                        User Currency
+                    </label>
+                    <input
+                        class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="userCurrency" type="text" value="{{ $user->wallet->currency->currency_name . ' (' . $user->wallet->currency->currency_symbol .') ' }}" readonly/>
+                        <input type="hidden" id="currencyName" value="{{ $user->wallet->currency->currency_name }}">
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-sm font-bold text-gray-700" for="amount">
+                        Enter Amount to Transfer
+                    </label>
+                    <input
+                        class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="amount" type="text" placeholder="Enter Amount" />
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-sm font-bold text-gray-700" for="amount">
+                        <p class="text-red-600">Conversion Rate : <span id="conversion_rate"></span></p>
+                    </label>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-sm font-bold text-gray-700" for="amount">
+                        <p class="text-red-600">Receipient will receive : <span id="converted_amount"></span></p>
+                    </label>
+                </div>
+                <div class="mb-6 text-center">
+                    <button
+                        class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                        type="button">
+                        Transfer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#amount').on('keyup', function(e) {
+            e.preventDefault();
+            let value = $(this).val();
+            let currentUserCurrency = "{{ $user_wallet_currency->wallet->currency->currency_name }}";
+            let otherUserCurrency = $('#currencyName').val();
+            if (!$.isNumeric(value)) {
+                alert('Value must be numeric');
+                $(this).val('');
+            }else{
+                setTimeout(function () {
+                    let url = "{{ url('/exchange-rate') }}";
+                    $.ajax({
+                        url: url,
+                        cache: false,
+                        data: { currentUserCurrency: currentUserCurrency, otherUserCurrency: otherUserCurrency },
+                        success: function (result) {
+                            $('#conversion_rate').text(result);
+                            $('#converted_amount').text(parseFloat($('#amount').val() * result));
+                        }
+                    });
+                }, 1000);
+            }
+        });
+        $('.submit').on('click', function(e) {
+            e.preventDefault();
+
+        });
+    });
+</script>
