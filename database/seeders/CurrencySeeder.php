@@ -20,7 +20,7 @@ class CurrencySeeder extends Seeder
                 'currency_symbol' => '$',
             ],
             [
-                'currency_name' => 'EURO',
+                'currency_name' => 'EUR',
                 'currency_symbol' => '€',
             ]
         ]);
