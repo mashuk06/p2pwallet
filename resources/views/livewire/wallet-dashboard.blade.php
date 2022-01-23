@@ -51,6 +51,7 @@
                         class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                         id="userCurrency" type="text" value="{{ $user->wallet->currency->currency_name . ' (' . $user->wallet->currency->currency_symbol .') ' }}" readonly/>
                         <input type="hidden" id="currencyName" value="{{ $user->wallet->currency->currency_name }}">
+                        <input type="hidden" id="walletId" name="wallet_id" value="{{ $user_wallet_currency->wallet->id }}">
                 </div>
                 <div class="mb-4">
                     <label class="block mb-2 text-sm font-bold text-gray-700" for="amount">
