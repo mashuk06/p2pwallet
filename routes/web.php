@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\WalletDashboard;
+use App\Http\Controllers\ExchangeRateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +22,5 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/wallet-dashboard', WalletDashboard::class)->name('wallet-dashboard');
+    Route::get('/exchange-rate', [ExchangeRateController::class,'index'])->name('exchange-rate');
 });
