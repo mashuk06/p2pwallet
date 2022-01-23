@@ -37,7 +37,7 @@ class TransactionRepository
         $transaction->actual_amount = $data['actual_amount']; //amount has been sent
         $transaction->converted_amount = $data['converted_amount']; //amount has been received
         $transaction->conversion_rate = $data['conversion_rate']; //amount has been received
-        $transaction->transaction_status = 'processing'; //processing for just send // succeed for successfull transaction and failed for failed transaction
+        $transaction->transaction_status = 'succeed'; //processing for just send // succeed for successfull transaction and failed for failed transaction
 
         $transaction->save();
 

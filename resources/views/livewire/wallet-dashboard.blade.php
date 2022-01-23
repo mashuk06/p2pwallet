@@ -1,6 +1,6 @@
 <div class="flex flex-wrap -mx-6 overflow-hidden">
-    <div class="my-6 px-6 w-1/3 overflow-hidden border-2">
-        <div class="bg-gray-100 h-full w-full px-5 overflow-y-auto">
+    <div class="my-6 w-1/3 overflow-hidden border-2">
+        <div class="bg-gray-100 h-full w-full overflow-y-auto">
             <center>
                 <div id="empty-cover-art" class="shadow-md rounded w-80 bg-gray-300 text-center">
                     <center>
@@ -21,7 +21,7 @@
             </center>
         </div>
     </div>
-    <div class="my-6 px-6 w-1/2 overflow-hidden border-2">
+    <div class="my-6 px-6 w-1/3 overflow-hidden border-2">
         <div class="w-full bg-white p-5 rounded-lg lg:rounded-l-none">
             <h3 class="pt-4 text-2xl text-center">Transfer Balance!</h3>
             @if(Session::has('success'))
@@ -89,6 +89,33 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+    <div class="my-6 w-1/3 overflow-hidden border-2">
+        <div class="bg-gray-100 h-full w-full px-5 overflow-y-auto">
+            <h3 class="pt-4 text-2xl text-center">Transaction History</h3>
+            <table class="border-collapse border border-slate-400">
+                <thead>
+                    <tr>
+                        <th class="border border-slate-300">No</th>
+                        <th class="border border-slate-300">Transaction Id</th>
+                        <th class="border border-slate-300">Transfer Amount</th>
+                        <th class="border border-slate-300">Received Amount</th>
+                        <th class="border border-slate-300">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($transactionData as $key => $transaction)
+                    <tr>
+                        <td class="border border-slate-300">{{ ++$key }}</td>
+                        <td class="border border-slate-300">{{ $transaction->transaction_id}}</td>
+                        <td class="border border-slate-300">{{ $user_wallet_currency->wallet->currency->currency_symbol . $transaction->actual_amount }}</td>
+                        <td class="border border-slate-300">{{ $transaction->converted_amount }}</td>
+                        <td class="border border-slate-300">{{ $transaction->transaction_status }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
