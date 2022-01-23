@@ -24,13 +24,20 @@
     <div class="my-6 px-6 w-1/2 overflow-hidden border-2">
         <div class="w-full bg-white p-5 rounded-lg lg:rounded-l-none">
             <h3 class="pt-4 text-2xl text-center">Transfer Balance!</h3>
-            <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+            @if(Session::has('success'))
+                <p class="text-xl text-center text-green-500">{{ Session::get('success') }}</p>
+            @endif
+            @if(Session::has('error'))
+                <p class="text-xl text-center text-orange-500">{{ Session::get('error') }}</p>
+            @endif
+            <form method="post" action="{{ url('/store-transaction') }}" class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+                @csrf
                 <div class="mb-4">
                     <label class="block mb-2 text-sm font-bold text-gray-700" for="selectUser">
                         Select User
                     </label>
                     <select class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                        id="selectUser">
+                        id="selectUser" name="receiver_id">
                         @foreach($all_users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                         @endforeach
@@ -51,22 +58,33 @@
                     </label>
                     <input
                         class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                        id="amount" type="text" placeholder="Enter Amount" />
+                        id="amount" type="text" name="actual_amount" placeholder="Enter Amount" />
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-sm font-bold text-gray-700" for="description">
+                        Enter Description (Optional)
+                    </label>
+                    <input
+                        class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="description" type="text" name="transaction_description" placeholder="Enter Transaction Description" />
                 </div>
                 <div class="mb-4">
                     <label class="block mb-2 text-sm font-bold text-gray-700" for="amount">
-                        <p class="text-red-600">Conversion Rate : <span id="conversion_rate"></span></p>
+                        <p class="text-red-600">Conversion Rate : <span id="conversionRate"></span></p>
                     </label>
                 </div>
+                <input type="hidden" name="conversion_rate" id="convertRate">
                 <div class="mb-4">
                     <label class="block mb-2 text-sm font-bold text-gray-700" for="amount">
-                        <p class="text-red-600">Receipient will receive : <span id="converted_amount"></span></p>
+                        <p class="text-red-600">Receipient will receive : <span id="receipientAmount"></span></p>
                     </label>
                 </div>
+                <input type="hidden" name="converted_amount" id="convertedAmount">
+                <input type="hidden" name="transaction_type" value="credit">
                 <div class="mb-6 text-center">
                     <button
                         class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                        type="button">
+                        type="submit">
                         Transfer
                     </button>
                 </div>
@@ -92,8 +110,11 @@
                         cache: false,
                         data: { currentUserCurrency: currentUserCurrency, otherUserCurrency: otherUserCurrency },
                         success: function (result) {
-                            $('#conversion_rate').text(result);
-                            $('#converted_amount').text(parseFloat($('#amount').val() * result));
+                            let convertedAmount = parseFloat($('#amount').val() * result);
+                            $('#conversionRate').text(result);
+                            $('#convertRate').val(result);
+                            $('#receipientAmount').text(convertedAmount);
+                            $('#convertedAmount').val(convertedAmount);
                         }
                     });
                 }, 1000);
