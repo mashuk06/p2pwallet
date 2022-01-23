@@ -22,7 +22,7 @@ class WalletSeeder extends Seeder
                 'status' => 'active',
             ],
             [
-                'user_id' => 1,
+                'user_id' => 2,
                 'currency_id' => 2,
                 'available_amount' => 10000.00,
                 'status' => 'active',
