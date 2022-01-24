@@ -25,20 +25,35 @@ Feel free to ask any questions. Write down any significant problems you
 encountered. Let us know how you solved them or how you would tackle them if you
 had more time.
 Requirements:
-❖ Use ReactJS / VueJS / Laravel Blade with a secure Laravel / Lumen RESTful
+-- Use ReactJS / VueJS / Laravel Blade with a secure Laravel / Lumen RESTful
 API to develop this currency conversion application.
-❖ Use any authentication feature to make your API secure e.g. Token, JWT,
+-- Use any authentication feature to make your API secure e.g. Token, JWT,
 Passport or Sanctum.
-❖ Each user will have only one single currency based wallet.
-❖ The system should also display the following stats:
-❏ User who used most conversion.
-❏ The total amount converted for a particular user.
-❏ Show the third highest amount of transactions for a particular user
+-- Each user will have only one single currency based wallet.
+-- The system should also display the following stats:
+-- User who used most conversion.
+-- The total amount converted for a particular user.
+-- Show the third highest amount of transactions for a particular user
 (must use subquery).
-❖ You have to calculate and store data in the database to show stats properly.
-❖ We prefer to use a MySQL database for storing user’s data and stats.
-❖ For interface design using any appropriate responsive design template.
-❖ In the backend, use an external API to get the currency rates.
+-- You have to calculate and store data in the database to show stats properly.
+-- We prefer to use a MySQL database for storing user’s data and stats.
+-- For interface design using any appropriate responsive design template.
+-- In the backend, use an external API to get the currency rates.
+
+## Project Installation
+
+-- composer update
+-- php artisan storage:link
+-- npm install && npm run dev/watch
+-- change env db credentials and mail credentials
+-- php artisan migrate:fresh --seed
+-- php artisan queue:work/listen
+-- Credentials : Email :user1@gmail.com/user2@gmail.com password : 123456
+
+## Api Collection
+
+-- https://www.getpostman.com/collections/382192c400a0d8c243fe
+
 
 ## License
 
