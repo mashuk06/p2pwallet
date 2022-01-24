@@ -1,28 +1,31 @@
-<div class="flex flex-wrap -mx-6 overflow-hidden">
-    <div class="my-6 w-1/4 overflow-hidden border-2">
-        <div class="bg-gray-100 h-full w-full overflow-y-auto">
-            <center>
-                <div id="empty-cover-art" class="shadow-md rounded w-80 bg-gray-300 text-center">
-                    <center>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                        </svg>
-                        <p>Welcome, {{ $user_wallet_currency->name }}</p>
-                        <p>Your Currency is {{ $user_wallet_currency->wallet->currency->currency_name }}</p>
-                    </center>
-                </div>
-                <br><strong>
-                    <p class="text-xl">Current Balance Is: {{
+<div class="flex flex-wrap overflow-hidden sm:-mx-1">
+    <div class="w-1/6 overflow-hidden sm:my-1 sm:px-1 bg-orange-200 border-r-4 border-stone-400">
+        <div class="h-full w-full overflow-y-auto">
+            <div id="empty-cover-art" class="shadow-md rounded w-full">
+                <center>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                </center>
+                <p class="ml-4">Welcome, {{ $user_wallet_currency->name }}</p>
+                <p class="ml-4">Your Currency is {{ $user_wallet_currency->wallet->currency->currency_name }}</p>
+            </div>
+            <br><strong>
+                <p class="text-xl ml-2">Your Current Balance</p>
+                <center>
+                    <p class="h-10 ml-2 mt-5 bg-gray-100 mr-2 w-94 text-3xl border-2 border-stone-900">{{
                         $user_wallet_currency->wallet->currency->currency_symbol .
-                        $user_wallet_currency->wallet->available_amount }}</p>
-                </strong><br>
-            </center>
+                        $user_wallet_currency->wallet->available_amount }}
+                    </p>
+                <center>
+            </strong><br>
         </div>
     </div>
-    <div class="my-6 px-6 w-1/4 overflow-hidden border-2">
-        <div class="w-full bg-white p-5 rounded-lg lg:rounded-l-none">
+
+  <div class="w-2/6 overflow-hidden sm:my-1 sm:px-1 bg-orange-200 border-r-4 border-stone-400">
+    <div class="w-full p-5 rounded-lg lg:rounded-l-none">
             <h3 class="pt-4 text-2xl text-center">Transfer Balance!</h3>
             @if(Session::has('success'))
                 <p class="text-xl text-center text-green-500">{{ Session::get('success') }}</p>
@@ -30,7 +33,7 @@
             @if(Session::has('error'))
                 <p class="text-xl text-center text-orange-500">{{ Session::get('error') }}</p>
             @endif
-            <form method="post" action="{{ url('/store-transaction') }}" class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+            <form method="post" action="{{ url('/store-transaction') }}" class="px-8 pt-6 pb-8 mb-4 bg-black-100 rounded">
                 @csrf
                 <div class="mb-4">
                     <label class="block mb-2 text-sm font-bold text-gray-700" for="selectUser">
@@ -84,43 +87,44 @@
                 <input type="hidden" name="transaction_type" value="credit">
                 <div class="mb-6 text-center">
                     <button
-                        class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                        class="w-full px-4 py-2 font-bold text-white bg-orange-500 rounded-full hover:bg-orange-700 focus:outline-none focus:shadow-outline"
                         type="submit">
                         Transfer
                     </button>
                 </div>
             </form>
         </div>
-    </div>
-    <div class="my-6 w-1/2 overflow-hidden border-2">
-        <div class="bg-gray-100 h-full w-full px-5 overflow-y-auto">
-            <h3 class="pt-4 text-2xl text-center">Transaction History</h3>
-            <table class="border-collapse border border-slate-400">
+  </div>
+
+  <div class="w-3/6 overflow-hidden sm:my-1 sm:px-1 bg-orange-200">
+    <div class="px-2 overflow-y-auto">
+            <h3 class="pt-8 text-2xl text-center">Transaction History</h3>
+            <table class="w-full border-collapse text-center border border-black mt-10 p-3">
                 <thead>
                     <tr>
-                        <th class="border border-slate-300">No</th>
-                        <th class="border border-slate-300">Transaction Id</th>
-                        <th class="border border-slate-300">Receipient</th>
-                        <th class="border border-slate-300">Transfer Amount</th>
-                        <th class="border border-slate-300">Received Amount</th>
-                        <th class="border border-slate-300">Status</th>
+                        <th class="border border-black">No</th>
+                        <th class="border border-black">Transaction Id</th>
+                        <th class="border border-black">Receipient</th>
+                        <th class="border border-black">Transfered</th>
+                        <th class="border border-black">Received</th>
+                        <th class="border border-black">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($transactionData as $key => $transaction)
-                    <tr>
-                        <td class="border border-slate-300">{{ ++$key }}</td>
-                        <td class="border border-slate-300">{{ $transaction->transaction_id}}</td>
-                        <td class="border border-slate-300">{{ $user->name }}</td>
-                        <td class="border border-slate-300">{{ $user_wallet_currency->wallet->currency->currency_symbol . $transaction->actual_amount }}</td>
-                        <td class="border border-slate-300">{{ $user->wallet->currency->currency_symbol . $transaction->converted_amount }}</td>
-                        <td class="border border-slate-300">{{ $transaction->transaction_status }}</td>
+                    <tr class="bg-orange-100">
+                        <td class="border border-black">{{ ++$key }}</td>
+                        <td class="border border-black">{{ $transaction->transaction_id}}</td>
+                        <td class="border border-black">{{ $user->name }}</td>
+                        <td class="border border-black">{{ $user_wallet_currency->wallet->currency->currency_symbol . $transaction->actual_amount }}</td>
+                        <td class="border border-black">{{ $user->wallet->currency->currency_symbol . $transaction->converted_amount }}</td>
+                        <td class="border border-black">{{ $transaction->transaction_status }}</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-    </div>
+  </div>
 </div>
 <script type="text/javascript">
     $(document).ready(function(){
