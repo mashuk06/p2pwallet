@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\TransactionService;
 use App\Services\WalletService;
+use App\Services\EmailService;
 
 class TransactionController extends Controller
 {
 
     protected $transactionService;
 
-    public function __construct(TransactionService $transactionService,WalletService $walletService){
+    public function __construct(TransactionService $transactionService,WalletService $walletService,EmailService $emailService){
         $this->transactionService = $transactionService;
         $this->walletService = $walletService;
+        $this->emailService = $emailService;
     }
 
     public function store(Request $request){
@@ -30,6 +32,7 @@ class TransactionController extends Controller
         try{
             $doTransaction = $this->transactionService->saveTransactionData($data);
             if($doTransaction) $this->walletService->adjustWalletBalance($data,$data['wallet_id']);
+            $this->emailService->sendEmailToUser($data['receiver_id']);
         }catch(\Exception $e){
             return redirect()
                 ->to('/wallet-dashboard')
