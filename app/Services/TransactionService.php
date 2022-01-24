@@ -40,4 +40,20 @@ class TransactionService
 
         return $result;
     }
+
+    public function getMostConversion(){
+        $result = $this->transactionRepository->getMostConvertedTransactionData();
+        return $result;
+    }
+
+    public function getUserWiseTotalAmountConversion(){
+        $result = $this->transactionRepository->getUserWiseConvertedTransactionData();
+        return $result;
+    }
+
+    public function getThirdHighestConvertedAmount(){
+        $result = $this->transactionRepository->getThirdHighestTransactionData();
+        return $result;
+    }
+
 }

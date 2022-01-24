@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 use App\Models\Transaction;
-
+use Illuminate\Support\Facades\DB;
 class TransactionRepository
 {
 
@@ -44,5 +44,36 @@ class TransactionRepository
         return $transaction->fresh();
     }
 
+
+    public function getMostConvertedTransactionData(){
+        $transactionData = Transaction::with(['user' => function($query){
+            $query->select('name','id');
+        }])->select('sender_id')
+            ->selectRaw('COUNT(*) AS count')
+            ->groupBy('sender_id')
+            ->orderByDesc('count')
+            ->limit(1)
+            ->get();
+        return $transactionData;
+    }
+
+    public function getUserWiseConvertedTransactionData(){
+        $transactionData = Transaction::with(['user' => function($query){
+            $query->select('name','id');
+        }])->groupBy('sender_id')
+            ->selectRaw('sum(actual_amount) as total, sender_id')
+            ->get();
+
+        return $transactionData;
+    }
+
+    public function getThirdHighestTransactionData(){
+        $transactionData = Transaction::with(['user' => function($query){
+            $query->select('name','id');
+        }])->selectRaw("* FROM (SELECT actual_amount FROM transactions ORDER BY actual_amount DESC LIMIT 3) AS tbl ORDER BY actual_amount ASC LIMIT 1")->get();
+        dd($transactionData);
+
+        return $transactionData;
+    }
 
 }

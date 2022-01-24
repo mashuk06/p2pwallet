@@ -22,4 +22,8 @@ class Transaction extends Model
         'conversion_rate',
         'transaction_description'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class,'sender_id','id');
+    }
 }
