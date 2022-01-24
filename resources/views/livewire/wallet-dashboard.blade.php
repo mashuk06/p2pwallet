@@ -84,7 +84,7 @@
                     </label>
                 </div>
                 <input type="hidden" name="converted_amount" id="convertedAmount">
-                <input type="hidden" name="transaction_type" value="credit">
+                <input type="hidden" name="transaction_type" value="debit">
                 <div class="mb-6 text-center">
                     <button
                         class="w-full px-4 py-2 font-bold text-white bg-orange-500 rounded-full hover:bg-orange-700 focus:outline-none focus:shadow-outline"
@@ -98,32 +98,32 @@
 
   <div class="w-3/6 overflow-hidden sm:my-1 sm:px-1 bg-orange-200">
     <div class="px-2 overflow-y-auto">
-            <h3 class="pt-8 text-2xl text-center">Transaction History</h3>
-            <table class="w-full border-collapse text-center border border-black mt-10 p-3">
-                <thead>
-                    <tr>
-                        <th class="border border-black">No</th>
-                        <th class="border border-black">Transaction Id</th>
-                        <th class="border border-black">Receipient</th>
-                        <th class="border border-black">Transfered</th>
-                        <th class="border border-black">Received</th>
-                        <th class="border border-black">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($transactionData as $key => $transaction)
-                    <tr class="bg-orange-100">
-                        <td class="border border-black">{{ ++$key }}</td>
-                        <td class="border border-black">{{ $transaction->transaction_id}}</td>
-                        <td class="border border-black">{{ $user->name }}</td>
-                        <td class="border border-black">{{ $user_wallet_currency->wallet->currency->currency_symbol . $transaction->actual_amount }}</td>
-                        <td class="border border-black">{{ $user->wallet->currency->currency_symbol . $transaction->converted_amount }}</td>
-                        <td class="border border-black">{{ $transaction->transaction_status }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <h3 class="pt-8 text-2xl text-center">Transaction History</h3>
+        <table class="w-full border-collapse text-center border border-black mt-10 p-3">
+            <thead>
+                <tr>
+                    <th class="border border-black">No</th>
+                    <th class="border border-black">Transaction Id</th>
+                    <th class="border border-black">Receipient</th>
+                    <th class="border border-black">Transfered</th>
+                    <th class="border border-black">Received</th>
+                    <th class="border border-black">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($transactionData as $key => $transaction)
+                <tr class="bg-orange-100">
+                    <td class="border border-black">{{ ++$key }}</td>
+                    <td class="border border-black">{{ $transaction->transaction_id}}</td>
+                    <td class="border border-black">{{ $user->name }}</td>
+                    <td class="border border-black">{{ $user_wallet_currency->wallet->currency->currency_symbol . $transaction->actual_amount }}</td>
+                    <td class="border border-black">{{ $user->wallet->currency->currency_symbol . $transaction->converted_amount }}</td>
+                    <td class="border border-black">{{ $transaction->transaction_status }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
   </div>
 </div>
 <script type="text/javascript">
@@ -151,7 +151,7 @@
                             $('#convertedAmount').val(convertedAmount);
                         }
                     });
-                }, 1000);
+                }, 500);
             }
         });
         $('.submit').on('click', function(e) {
