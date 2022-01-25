@@ -28,10 +28,10 @@
     <div class="w-full p-5 rounded-lg lg:rounded-l-none">
             <h3 class="pt-4 text-2xl text-center">Transfer Balance!</h3>
             @if(Session::has('success'))
-                <p class="text-xl text-center text-green-500">{{ Session::get('success') }}</p>
+                <p class="text-lg text-center text-green-500">{{ Session::get('success') }}</p>
             @endif
             @if(Session::has('error'))
-                <p class="text-xl text-center text-orange-500">{{ Session::get('error') }}</p>
+                <p class="text-lg text-center text-orange-500">{{ Session::get('error') }}</p>
             @endif
             <form method="post" action="{{ url('/store-transaction') }}" class="px-8 pt-6 pb-8 mb-4 bg-black-100 rounded">
                 @csrf

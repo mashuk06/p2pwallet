@@ -72,9 +72,12 @@ class TransactionRepository
     public function getThirdHighestTransactionData(){
         $transactionData = $this->transaction->with(['user' => function($query){
             $query->select('name','id');
-        }])->selectRaw("* FROM (SELECT actual_amount FROM transactions ORDER BY actual_amount DESC LIMIT 3) AS tbl ORDER BY actual_amount ASC LIMIT 1")->get();
-        dd($transactionData);
-
+        }])
+        ->select("actual_amount","sender_id")
+        ->orderBy('actual_amount','DESC')
+        ->limit(1)
+        ->offset(2)
+        ->first();
         return $transactionData;
     }
 

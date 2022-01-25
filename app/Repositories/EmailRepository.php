@@ -28,7 +28,7 @@ class EmailRepository
 
     public function getUserEmailAndSendEmail($receiver_id){
         $user = $this->user->where('id',$receiver_id)->first();
-            dispatch(new TransactionEmailJob($user->email));
+            dispatch(new TransactionEmailJob($user->email))->delay(1);
         return true;
     }
 }

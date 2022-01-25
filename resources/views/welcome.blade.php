@@ -72,7 +72,7 @@
                             <h1 class="ml-4 text-lg leading-7 font-semibold">Third highest Converted Amount</h1>
                             <div class="ml-4">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    <p>User Name: X | Converted Amount: 0</p>
+                                    <p>User Name: {{ $thirdHighestConvertedAmount->user->name ?? "Not Found" }} | Converted Amount: {{ $thirdHighestConvertedAmount->actual_amount ?? "Not Found" }}</p>
                                 </div>
                             </div>
                         </div>

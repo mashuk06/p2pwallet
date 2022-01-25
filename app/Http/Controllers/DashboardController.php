@@ -20,13 +20,13 @@ class DashboardController extends Controller
             $mostConversion = $this->transactionService->getMostConversion();
             $totalAmountConversionByUser = $this->transactionService->getUserWiseTotalAmountConversion();
             $thirdHighestConvertedAmount = $this->transactionService->getThirdHighestConvertedAmount();
-            dd($thirdHighestConvertedAmount);
         }catch(\Exception $e){
             $errors = $e->getMessage();
         }
         return view('welcome',[
             'mostConversion' => $mostConversion,
             'totalAmountConversionByUser' => $totalAmountConversionByUser,
+            'thirdHighestConvertedAmount' => $thirdHighestConvertedAmount,
             'errors' => $errors
         ]);
     }
